@@ -1,35 +1,28 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from "react";
+import "./App.css";
+import Cart from "./components/Cart/Cart";
+import Desserts from "./components/Desserts/Desserts";
+import data from "./assets/data.json"; // Import the JSON file directly
+const App = () => {
+  const [items, setItems] = useState([]);
 
-function App() {
-  const [count, setCount] = useState(0)
+  useEffect(() => {
+    // Since we're importing the JSON, we don't need to fetch it
+    const extracted = data.map(({ name, price, image }, index) => ({
+      id: index + 1,
+      name,
+      price,
+      image: image.desktop,
+    }));
+    setItems(extracted);
+  }, []); // No need for dependencies since data is static
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <main>
+      <Desserts items={items} />
+      <Cart />
+    </main>
+  );
+};
 
-export default App
+export default App;
